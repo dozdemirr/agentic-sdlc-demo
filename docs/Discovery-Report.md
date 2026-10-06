@@ -124,13 +124,16 @@ graph TB
     MVCdb[MVC 5 EF6 context]
     PortedDb[Ported EF Core context]
     WCFDb[WCF EF6 EntityModel]
-    LocalDb[(SQL Server LocalDB)]
+    WFStore[(LocalDB configured catalog database)]
+    MVCStore[(LocalDB configured catalog database)]
+    PortedStore[(LocalDB eShopPorted)]
+    WCFStore[(LocalDB eShopDatabase)]
   end
-  WF --> WFSvc --> WFDb --> LocalDb
-  MVC --> MVCSvc --> MVCdb --> LocalDb
-  Ported --> PortedSvc --> PortedDb --> LocalDb
+  WF --> WFSvc --> WFDb --> WFStore
+  MVC --> MVCSvc --> MVCdb --> MVCStore
+  Ported --> PortedSvc --> PortedDb --> PortedStore
   Desktop --> WCF
-  WCF --> WCFDb --> LocalDb
+  WCF --> WCFDb --> WCFStore
 ```
 
 The app-to-database arrows show the configured code paths; they do not assert that all applications connect to one physical LocalDB instance. The web applications can instead register mock services according to their config. Sources: Web Forms `/home/runner/work/agentic-sdlc-demo/agentic-sdlc-demo/eShopLegacyWebFormsSolution/src/eShopLegacyWebForms/Modules/ApplicationModule.cs` (lines 16–39); MVC 5 `/home/runner/work/agentic-sdlc-demo/agentic-sdlc-demo/eShopLegacyMVCSolution/src/eShopLegacyMVC/Modules/ApplicationModule.cs` (lines 16–39); ported app `/home/runner/work/agentic-sdlc-demo/agentic-sdlc-demo/eShopLegacyMVCSolution/eShopPorted/Modules/ApplicationModule.cs` (lines 16–30) and `Startup.cs` (lines 25–46); WCF `/home/runner/work/agentic-sdlc-demo/agentic-sdlc-demo/eShopLegacyNTier/src/eShopWCFService/EntityModel.cs` (lines 10–22).
